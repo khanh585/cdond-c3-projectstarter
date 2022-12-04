@@ -66,57 +66,45 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
 
-#   test-frontend:
-#     docker:
-#       docker:
-#         - image: circleci/node:13.8.0
-#     steps:
-#       - checkout
-#       - run:
-#           name: Install junit coverage reporter
-#           working_directory: ./frontend
-#           command: npm install --save-dev jest-junit
-#       - run:
-#           name: Run tests with JUnit as reporter
-#           working_directory: ./frontend
-#           command: npm test -- --ci --runInBand --reporters=default --reporters=jest-junit && pwd && ls -la /tmp
-#           environment:
-#             JEST_JUNIT_OUTPUT_DIR: ./test_results
-#       - store_test_results:
-#           path: ./frontend/test_results
-#       - store_artifacts:
-#           path: ./frontend/test_results
+  test-frontend:
+    docker:
+      docker:
+        - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]
+      - run:
+          name: Test Front-end
+          command: |
+            cd frontend
+            npm i
+            npm run test
                 
-#   test-backend:
-#     docker:
-#       docker:
-#         - image: circleci/node:13.8.0
-#     steps:
-#       - checkout
-#       - run:
-#           name: Install junit coverage reporter
-#           working_directory: ./backend
-#           command: npm install --save-dev jest-junit
-#       - run:
-#           name: Run tests with JUnit as reporter
-#           working_directory: ./backend
-#           command: npm test -- --ci --runInBand --reporters=default --reporters=jest-junit && pwd
-#           environment:
-#             JEST_JUNIT_OUTPUT_DIR: ./test_results
-#       - store_test_results:
-#           path: ./backend/test_results
-#       - store_artifacts:
-#           path: ./backend/test_results
+  test-backend:
+    docker:
+      docker:
+        - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: Test Back-end
+          command: |
+            cd backend
+            npm i
+            npm run test
             
-#   scan-frontend:
-#     docker:
-#       - image: circleci/node:13.8.0
-#     steps:
-#       - checkout
-#       - run:
-#           name: Check Frontend against security vulnerabilities
-#           working_directory: ./frontend
-#           command: npm audit --audit-level=critical
+  scan-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: Check Frontend against security vulnerabilities
+          working_directory: ./frontend
+          command: npm audit --audit-level=critical
 
 #   scan-backend:
 #     docker:

@@ -1,11 +1,10 @@
 ---
-
-- name: "configuration play." 
+- name: "configuration play."
   hosts: web
   user: ubuntu
   become: true
   become_method: sudo
-  become_user: root  
+  become_user: root
   gather_facts: false
   vars:
     - ansible_python_interpreter: /usr/bin/python3
@@ -20,11 +19,11 @@
 
     - name: "install python for Ansible."
       # Your code here
-      raw: 'apt -y install python3'
+      raw: "apt -y install python3"
 
   # Get the environment variables from CircleCI and add to the EC2 instance
   environment:
-    - TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}"  
+    - TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}"
     # Add more env vars here
     - TYPEORM_ENTITIES: "{{ lookup('env','TYPEORM_ENTITIES') }}"
     - TYPEORM_MIGRATIONS: "{{ lookup('env','TYPEORM_MIGRATIONS') }}"
@@ -49,8 +48,8 @@
         echo TYPEORM_DATABASE=\"$TYPEORM_DATABASE\" >> /etc/environment
         echo TYPEORM_MIGRATIONS=\"$TYPEORM_MIGRATIONS\" >> /etc/environment
         echo TYPEORM_MIGRATIONS_DIR=\"$TYPEORM_MIGRATIONS_DIR\" >> /etc/environment
-        
+
   roles:
-    # Your code here
     - configure-server
-    - configure-prometheus-node-exporter 
+    - configure-prometheus-node-exporter
+    

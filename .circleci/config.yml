@@ -197,7 +197,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["f8:7f:e5:c3:67:2c:9b:f3:4c:6d:e2:34:94:cd:5e:13"]
+          fingerprints: ["b4:03:80:7b:6f:cc:5e:45:49:86:61:1c:eb:8b:cc:ad"]
       - attach_workspace:
           at: ~/
       - run:
@@ -302,7 +302,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["f8:7f:e5:c3:67:2c:9b:f3:4c:6d:e2:34:94:cd:5e:13"]
+          fingerprints: ["b4:03:80:7b:6f:cc:5e:45:49:86:61:1c:eb:8b:cc:ad"]
       - run:
           name: Install dependencies
           command: |
@@ -470,5 +470,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]
+      # - cleanup:
+      #     requires: [cloudfront-update]

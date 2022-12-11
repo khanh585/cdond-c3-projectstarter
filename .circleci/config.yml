@@ -397,12 +397,12 @@ jobs:
           name: Update cloudfront distribution
           command: |
             # your code here
-            # export OldWorkflowID=$(aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --no-paginate --output text)
+            export OldWorkflowID=$(aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --no-paginate --output text)
 
-            # echo $OldWorkflowID >> ~/OldWorkflowID.txt
-            # cat ~/OldWorkflowID.txt
+            echo $OldWorkflowID >> ~/OldWorkflowID.txt
+            cat ~/OldWorkflowID.txt
 
-            # curl https://kvdb.io/SwRP28esbECYtkcXhFhohQ/${CIRCLE_WORKFLOW_ID:0:7} -d $OldWorkflowID
+            curl https://kvdb.io/SwRP28esbECYtkcXhFhohQ/${CIRCLE_WORKFLOW_ID:0:7} -d $OldWorkflowID
 
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
@@ -468,7 +468,7 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
-      # - cloudfront-update:
-      #     requires: [smoke-test]
-      # - cleanup:
-      #     requires: [cloudfront-update]
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
